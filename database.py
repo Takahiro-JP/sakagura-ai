@@ -70,3 +70,23 @@ def save_post(product_id, platform, content, target):
             (product_id, platform, content, target)
         )
         return cur.lastrowid
+
+def get_post_history(product_id=None, platform=None):
+    query = """
+        SELECT ph.*, p.name as product_name
+        FROM post_history ph
+        JOIN products p ON ph.product_id = p.id
+    """
+    params = []
+    conditions = []
+    if product_id:
+        conditions.append("ph.product_id = ?")
+        params.append(product_id)
+    if platform:
+        conditions.append("ph.platform = ?")
+        params.append(platform)
+    if conditions:
+        query += " WHERE " + " AND ".join(conditions)
+    query += " ORDER BY ph.created_at DESC"
+    with get_db() as conn:
+        return [dict(r) for r in conn.execute(query, params).fetchall()]

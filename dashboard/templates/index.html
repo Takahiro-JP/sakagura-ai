@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>酒蔵AIアシスタント</title>
+    <style>
+        body { font-family: sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; }
+        h1 { color: #333; border-bottom: 2px solid #333; padding-bottom: 10px; }
+        nav a { margin-right: 20px; color: #0066cc; text-decoration: none; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { background: #333; color: white; padding: 10px; text-align: left; }
+        td { padding: 10px; border-bottom: 1px solid #ddd; }
+        tr:hover { background: #f5f5f5; }
+    </style>
+</head>
+<body>
+    <h1>酒蔵AIアシスタント</h1>
+    <nav>
+        <a href="/">商品一覧</a>
+        <a href="/history">投稿履歴</a>
+    </nav>
+
+    {% if products %}
+    <h2>商品一覧</h2>
+    <table>
+        <tr>
+            <th>ID</th><th>商品名</th><th>シリーズ</th><th>精米歩合</th><th>価格</th><th>ターゲット</th>
+        </tr>
+        {% for p in products %}
+        <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.name }}</td>
+            <td>{{ p.series }}</td>
+            <td>{{ p.seimaibuai }}%</td>
+            <td>{{ p.price }}円</td>
+            <td>{{ p.target_age }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    {% if posts %}
+    <h2>投稿履歴</h2>
+    <table>
+        <tr>
+            <th>日時</th><th>商品名</th><th>プラットフォーム</th><th>ターゲット</th><th>内容</th>
+        </tr>
+        {% for p in posts %}
+        <tr>
+            <td>{{ p.created_at }}</td>
+            <td>{{ p.product_name }}</td>
+            <td>{{ p.platform }}</td>
+            <td>{{ p.target }}</td>
+            <td>{{ p.content[:50] }}...</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</body>
+</html>
