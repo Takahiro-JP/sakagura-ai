@@ -12,7 +12,8 @@
 ## 使用例
 
 ### /post コマンド
-![post](screenshot.png)
+![post1](screenshot.png)
+![post2](screenshot_yo-ko.png)
 
 ### ダッシュボード
 ![dashboard](dashboard_screenshot.png)
