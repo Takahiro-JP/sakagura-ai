@@ -1,13 +1,21 @@
 import anthropic
 import os
 import json
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from dotenv import load_dotenv
+from rag.retriever import search
 
 load_dotenv()
 
 client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
 def generate_post(product: dict, target: str) -> dict:
+    # RAGで関連情報を検索
+    rag_results = search(product['name'], n_results=3)
+    rag_context = "\n".join(rag_results)
+
     prompt = f"""あなたは日本酒蔵「楯野川」の広報担当AIです。
 以下の商品情報とターゲットに合わせたSNS投稿文を生成してください。
 
@@ -17,6 +25,9 @@ def generate_post(product: dict, target: str) -> dict:
 価格: {product['price']}円
 味わい: {product['flavor_notes']}
 ターゲット層: {target}
+
+【蔵元・商品の追加情報】
+{rag_context}
 
 以下のJSON形式のみで出力してください。余分なテキストは不要です。
 
@@ -35,7 +46,6 @@ def generate_post(product: dict, target: str) -> dict:
 
     try:
         text = message.content[0].text
-        # コードブロックを除去
         text = text.replace("```json", "").replace("```", "").strip()
         return json.loads(text)
     except json.JSONDecodeError:
