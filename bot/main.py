@@ -5,6 +5,7 @@ import os
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from claude_client import generate_post
 from database import search_products, save_post
@@ -55,5 +56,26 @@ async def post(ctx, product: str, *, target: str):
 {result['facebook']}
 """
     await ctx.send(output)
+
+@bot.command()
+async def analyze(ctx):
+    if not ctx.message.attachments:
+        await ctx.send("CSVファイルを添付してください")
+        return
+
+    attachment = ctx.message.attachments[0]
+    if not attachment.filename.endswith(".csv"):
+        await ctx.send("CSVファイルを添付してください")
+        return
+
+    await ctx.send("分析中...")
+
+    csv_bytes = await attachment.read()
+    csv_text = csv_bytes.decode("utf-8")
+
+    from analyze import analyze_sns
+    result = analyze_sns(csv_text)
+
+    await ctx.send(result)
 
 bot.run(os.getenv("DISCORD_TOKEN"))
