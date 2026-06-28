@@ -26,4 +26,4 @@ python3 bot/main.py   # Bot起動
 
 ## 使用例
 /post 楯野川純米大吟醸清流 50代
-![alt text](image.png)
+![screenshot](screenshot.png)
