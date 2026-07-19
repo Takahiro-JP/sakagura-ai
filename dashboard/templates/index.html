@@ -19,6 +19,7 @@
         <a href="/">商品一覧</a>
         <a href="/products/new">商品追加</a>
         <a href="/history">投稿履歴</a>
+        <a href="/analyze_history">分析履歴</a>
         <a href="/rag">RAG一覧</a>
         <a href="/rag/register">RAG登録</a>
     </nav>
@@ -78,6 +79,22 @@
                 {% endif %}
             </td>
             <td>{{ d.preview }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    {% if analyze_histories %}
+    <h2>分析履歴</h2>
+    <table>
+        <tr>
+            <th>日時</th><th>ファイル名</th><th>分析結果</th>
+        </tr>
+        {% for h in analyze_histories %}
+        <tr>
+            <td>{{ h.created_at }}</td>
+            <td>{{ h.filename }}</td>
+            <td><pre style="white-space: pre-wrap; font-size: 12px;">{{ h.result }}</pre></td>
         </tr>
         {% endfor %}
     </table>

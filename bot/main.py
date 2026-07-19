@@ -74,7 +74,9 @@ async def analyze(ctx):
     csv_text = csv_bytes.decode("utf-8")
 
     from analyze import analyze_sns
+    from database import save_analyze
     result = analyze_sns(csv_text)
+    save_analyze(attachment.filename, result)
 
     await ctx.send(result)
 

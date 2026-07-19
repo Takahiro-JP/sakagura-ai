@@ -37,6 +37,13 @@ def init_db():
             target     TEXT,
             created_at TEXT DEFAULT (datetime('now', 'localtime'))
         );
+
+        CREATE TABLE IF NOT EXISTS analyze_history (
+            id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            filename   TEXT,
+            result     TEXT NOT NULL,
+            created_at TEXT DEFAULT (datetime('now', 'localtime'))
+        );
         """)
 
 def add_product(name, series, seimaibuai, price, flavor_notes, target_age="全世代"):
@@ -90,3 +97,17 @@ def get_post_history(product_id=None, platform=None):
     query += " ORDER BY ph.created_at DESC"
     with get_db() as conn:
         return [dict(r) for r in conn.execute(query, params).fetchall()]
+
+def save_analyze(filename: str, result: str):
+    with get_db() as conn:
+        conn.execute(
+            "INSERT INTO analyze_history (filename, result) VALUES (?, ?)",
+            (filename, result)
+        )
+
+def get_analyze_history():
+    with get_db() as conn:
+        rows = conn.execute(
+            "SELECT * FROM analyze_history ORDER BY created_at DESC"
+        ).fetchall()
+        return [dict(r) for r in rows]

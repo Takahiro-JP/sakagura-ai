@@ -101,3 +101,13 @@ async def rag_register(request: Request, url: str = Form(...)):
                 "message_type": "error"
             }
         )
+
+@app.get("/analyze_history", response_class=HTMLResponse)
+async def analyze_history_page(request: Request):
+    from database import get_analyze_history
+    histories = get_analyze_history()
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={"analyze_histories": histories}
+    )
