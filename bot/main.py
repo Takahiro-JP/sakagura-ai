@@ -78,4 +78,14 @@ async def analyze(ctx):
 
     await ctx.send(result)
 
+@bot.command()
+async def register_url(ctx, url: str):
+    await ctx.send(f"登録中: {url}")
+    try:
+        from rag.url_loader import load_url
+        preview = load_url(url)
+        await ctx.send(f"登録完了！\nプレビュー:\n{preview}")
+    except Exception as e:
+        await ctx.send(f"エラーが発生しました: {e}")
+
 bot.run(os.getenv("DISCORD_TOKEN"))
