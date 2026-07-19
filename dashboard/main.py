@@ -9,6 +9,7 @@ from database import get_all_products, get_post_history, add_product
 
 from fastapi import Form
 from fastapi.responses import RedirectResponse
+from rag.url_loader import load_url
 
 app = FastAPI()
 templates = Jinja2Templates(directory="dashboard/templates")
@@ -70,3 +71,33 @@ async def rag_status(request: Request):
         name="index.html",
         context={"rag_docs": docs}
     )
+
+@app.get("/rag/register", response_class=HTMLResponse)
+async def rag_register_form(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="rag_form.html",
+        context={}
+    )
+
+@app.post("/rag/register", response_class=HTMLResponse)
+async def rag_register(request: Request, url: str = Form(...)):
+    try:
+        preview = load_url(url)
+        return templates.TemplateResponse(
+            request=request,
+            name="rag_form.html",
+            context={
+                "message": f"登録完了！\n{preview}",
+                "message_type": "success"
+            }
+        )
+    except Exception as e:
+        return templates.TemplateResponse(
+            request=request,
+            name="rag_form.html",
+            context={
+                "message": f"エラー: {e}",
+                "message_type": "error"
+            }
+        )
