@@ -24,7 +24,7 @@ def analyze_sns(csv_text: str) -> str:
 
     message = client.messages.create(
         model="claude-sonnet-4-6",
-        max_tokens=1000,
+        max_tokens=4096,  # 1000 → 4096に変更
         messages=[{"role": "user", "content": prompt}]
     )
     return message.content[0].text

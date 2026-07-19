@@ -76,9 +76,14 @@ async def analyze(ctx):
     from analyze import analyze_sns
     from database import save_analyze
     result = analyze_sns(csv_text)
+
+    # DBには全文保存
     save_analyze(attachment.filename, result)
 
-    await ctx.send(result)
+    # Discordには2000文字ずつ分割して送信
+    chunk_size = 1900
+    for i in range(0, len(result), chunk_size):
+        await ctx.send(result[i:i+chunk_size])
 
 @bot.command()
 async def register_url(ctx, url: str):
