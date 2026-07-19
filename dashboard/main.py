@@ -5,10 +5,33 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
-from database import get_all_products, get_post_history
+from database import get_all_products, get_post_history, add_product
+
+from fastapi import Form
+from fastapi.responses import RedirectResponse
 
 app = FastAPI()
 templates = Jinja2Templates(directory="dashboard/templates")
+
+@app.get("/products/new", response_class=HTMLResponse)
+async def new_product(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="product_form.html",
+        context={}
+    )
+
+@app.post("/products/new")
+async def create_product(
+    name: str = Form(...),
+    series: str = Form(...),
+    seimaibuai: int = Form(...),
+    price: float = Form(...),
+    flavor_notes: str = Form(...),
+    target_age: str = Form(...)
+):
+    add_product(name, series, seimaibuai, price, flavor_notes, target_age)
+    return RedirectResponse(url="/", status_code=303)
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
