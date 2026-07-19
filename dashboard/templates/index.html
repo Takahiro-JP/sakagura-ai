@@ -18,7 +18,8 @@
     <nav>
         <a href="/">商品一覧</a>
         <a href="/history">投稿履歴</a>
-    </nav>
+        <a href="/rag">RAG一覧</a>
+</nav>
 
     {% if products %}
     <h2>商品一覧</h2>
@@ -52,6 +53,29 @@
             <td>{{ p.platform }}</td>
             <td>{{ p.target }}</td>
             <td>{{ p.content[:50] }}...</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    {% if rag_docs %}
+    <h2>RAGドキュメント一覧</h2>
+    <table>
+        <tr>
+            <th>#</th><th>種別</th><th>ソース</th><th>内容プレビュー</th>
+        </tr>
+        {% for d in rag_docs %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ d.type }}</td>
+            <td>
+                {% if d.source %}
+                <a href="{{ d.source }}" target="_blank">{{ d.source[:40] }}...</a>
+                {% else %}
+                {{ d.id }}
+                {% endif %}
+            </td>
+            <td>{{ d.preview }}</td>
         </tr>
         {% endfor %}
     </table>

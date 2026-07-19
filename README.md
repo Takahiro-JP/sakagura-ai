@@ -6,7 +6,7 @@
 
 - `/post [商品名] [ターゲット]` : Instagram・X・Facebook向け投稿文を一括生成
 - `/analyze` : SNSのCSVをアップロードして投稿パフォーマンスを分析
-- Webダッシュボード : 商品一覧・投稿履歴をブラウザで確認
+- Webダッシュボード : 商品一覧・投稿履歴・RAG一覧をブラウザで確認
 - RAG : 蔵元資料・プレスリリースを検索して投稿文に反映
 
 ## 使用例
@@ -15,8 +15,13 @@
 ![post1](screenshot.png)
 ![post2](screenshot_yo-ko.png)
 
+### /register_url コマンド
+![post3](screenshot_register_url.png)
+
 ### ダッシュボード
-![dashboard](dashboard_screenshot.png)
+![dashboard1](dashboard_screenshot.png)
+![dashboard2](dashboard_post_history.png)
+![dashboard3](dashboard_rag_history.png)
 
 ## システム構成
 

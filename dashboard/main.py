@@ -27,3 +27,23 @@ async def history(request: Request):
         name="index.html",
         context={"posts": posts}
     )
+
+@app.get("/rag", response_class=HTMLResponse)
+async def rag_status(request: Request):
+    import sys
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from rag.retriever import collection
+    results = collection.get()
+    docs = []
+    for i, doc_id in enumerate(results["ids"]):
+        docs.append({
+            "id": doc_id,
+            "type": results["metadatas"][i].get("type", ""),
+            "source": results["metadatas"][i].get("source", ""),
+            "preview": results["documents"][i][:100] + "..."
+        })
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={"rag_docs": docs}
+    )
