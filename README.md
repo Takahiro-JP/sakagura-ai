@@ -23,7 +23,8 @@
 ![dashboard2](dashboard_post_history.png)
 ![dashboard3](dashboard_rag_history.png)
 ![dashboard4](dashboard_new_product.png)
-
+![dashboard5](dashboard_new_rag.png)
+![dashboard6](dashboard_analysis_history.png)
 
 ## システム構成
 
